@@ -11,9 +11,10 @@ public class CalcActivity extends Activity  {
     int temp;
     int mark;
     int sum;
-
-
+    private String[] mStrings = {"aaa","abc","bbb","ccc"};
+    ListView listView;
     TextView text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -28,9 +29,20 @@ public class CalcActivity extends Activity  {
         text = (TextView)findViewById(R.id.textView);
         text.setText("00000000");
 
+        listView = (ListView)findViewById(R.id.listView);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mStrings);
+        listView.setAdapter(adapter);
+
         //フォント変更
         // ((TextView)findViewById(R.id.textView)).setTypeface(Typeface.createFromAsset(getAssets(), "LED7SEG_Standard.ttf"));
 
+
+    }
+    public void string(View v){
+        mStrings[0] = "www";
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mStrings);
+        listView.setAdapter(adapter);
     }
     public  void bt0(View v){
         temp *= 10;
