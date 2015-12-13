@@ -89,6 +89,7 @@ public class CalcActivity extends Activity  {
         temp *= 0;
         mark = 1;
         text.setText(Integer.toString(temp));
+        ///aaaaaa
     }
     public  void bt02(View v){
         sum = temp;
