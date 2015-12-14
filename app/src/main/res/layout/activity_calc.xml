@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/listView"
-        android:layout_weight="1">
+        android:layout_weight="4">
     </ListView>
 
     <GridLayout
         android:id="@+id/gridLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:columnCount="5"
         android:rowCount="5" >
         <TextView
@@ -170,6 +170,12 @@
             android:text="+"
             android:onClick="bt01" />
     </GridLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/text"
+        android:layout_weight="1"/>
 
 
 </LinearLayout>

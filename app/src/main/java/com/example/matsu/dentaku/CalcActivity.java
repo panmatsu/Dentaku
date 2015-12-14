@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.*;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
@@ -18,6 +19,8 @@ public class CalcActivity extends Activity  {
     TextView text;
     SharedPreferences data;
     SharedPreferences.Editor editor;
+    String check;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -28,7 +31,7 @@ public class CalcActivity extends Activity  {
 
         //レイアウトをセットする
         setContentView(R.layout.activity_calc);
-        data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
+        data = PreferenceManager.getDefaultSharedPreferences(this);
 
         //配列の初期化
         mList = new String[10];
@@ -41,15 +44,20 @@ public class CalcActivity extends Activity  {
 
         editor = data.edit();
         for(int i= 9;i>0;i--){
-            editor.putString(String.valueOf(mList[i]),mList[i]);
+            editor.putString(mList[i],mList[i]);
         }
         mList[0] = Integer.toString(temp);
-        editor.putInt("Stage[0]", 0);
+        editor.putString(mList[0], mList[0]);
         editor.apply();
 
         //Adapterにセット
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
         listView.setAdapter(adapter);
+
+        //おためし
+        check = data.getString("test","");
+        textView = (TextView)findViewById(R.id.text);
+        textView.setText(check);
 
     }
 
@@ -135,14 +143,22 @@ public class CalcActivity extends Activity  {
         else if(mark==4){
             temp = sum / temp;
         }
+
         editor = data.edit();
         for(int i= 9;i>0;i--){
             mList[i] = mList[i-1];
-            editor.putString(String.valueOf(mList[i]),mList[i]);
+            editor.putString(mList[i],mList[i]);
         }
         mList[0] = Integer.toString(temp);
-        editor.putInt("Stage[0]",1);
-        editor.apply();
+        editor.putString("test", mList[0]);
+        editor.commit();
+
+        //おためし
+        //check = data.getString("1",mList[0]);
+        textView = (TextView)findViewById(R.id.text);
+        textView.setText(data.getString("test",""));
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
         listView.setAdapter(adapter);
         text.setText(Integer.toString(temp));
