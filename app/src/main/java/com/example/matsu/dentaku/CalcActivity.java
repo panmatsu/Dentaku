@@ -100,7 +100,7 @@ public class CalcActivity extends Activity  {
     public  void bt03(View v){
         sum = temp;
         temp *= 0;
-        mark = 3;
+        mark = 3;//a
         text.setText(Integer.toString(temp));
     }
     public  void bt04(View v){
