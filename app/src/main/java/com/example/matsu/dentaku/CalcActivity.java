@@ -14,8 +14,11 @@ public class CalcActivity extends Activity  {
     int mark;
     int sum;
     SharedPreferences sp;
+    SharedPreferences.Editor editor;
     TextView textView;
     TextView text;
+    String mList[];
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -27,13 +30,27 @@ public class CalcActivity extends Activity  {
         //レイアウトをセットする
         setContentView(R.layout.activity_calc);
 
+
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sp.edit();
+        listView = (ListView)findViewById(R.id.listView);
+        mList = new String[10];
+        for (int i = 0;i<10;i++){
+            mList[i] = sp.getString("SaveString"+i,null);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
+        listView.setAdapter(adapter);
+
+
+
+        //結果表示の場所にとりあえず表示
         text = (TextView)findViewById(R.id.textView);
         text.setText("00000000");
 
         //追加
         textView = (TextView)findViewById(R.id.text);
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        textView.setText(sp.getString("SaveString", null), TextView.BufferType.NORMAL);
+        textView.setText(sp.getString("SaveString"+0, null), TextView.BufferType.NORMAL);
 
     }
 
@@ -132,16 +149,16 @@ public class CalcActivity extends Activity  {
 
     public  void equal(View v){        //"＝"を押したとき
         if(mark==1){
-            temp += sum;
+            temp += sum;  //  +
         }
         else if(mark==2){
-            temp = sum - temp;
+            temp = sum - temp;  //  -
         }
-        else if(mark==3){
+        else if(mark==3){    //  *
             temp *= sum;
         }
         else if(mark==4){
-            temp = sum / temp;
+            temp = sum / temp;   //   /
         }
         //結果をテキストに表示
         text.setText(String.valueOf(temp));
@@ -150,9 +167,18 @@ public class CalcActivity extends Activity  {
         //Preferenceのテスト
         textView.setText(String.valueOf(temp));
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putString("SaveString",String.valueOf(temp) ).commit();
+        editor = sp.edit();
+        for(int i = 9;i>0;i--){
+            mList[i] = mList[i-1];
+            editor.putString("SaveString" + i, mList[i]).apply();
+        }
+        editor.commit();
+        mList[0] = String.valueOf(temp);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
+        listView.setAdapter(adapter);
+        //Preferenceにデータを保存
+        sp.edit().putString("SaveString"+0,String.valueOf(temp)).apply();
 
     }
-
 
 }
