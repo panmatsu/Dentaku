@@ -15,7 +15,6 @@ public class CalcActivity extends Activity  {
     int sum;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
-    TextView textView;
     TextView text;
     String mList[];
     ListView listView;
@@ -46,14 +45,9 @@ public class CalcActivity extends Activity  {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
         listView.setAdapter(adapter);
 
-
-
-        //結果表示の場所にとりあえず表示
+        //結果表示の場所に表示
         text = (TextView)findViewById(R.id.textView);
-        text.setText("00000000");
-
-
-
+        text.setText("0");
     }
 
     //０のとき
@@ -182,10 +176,10 @@ public class CalcActivity extends Activity  {
         }
         sp.edit().putString("SaveString"+0,String.valueOf(temp)).apply();
         mList[0] = String.valueOf(temp);
+
+        //ListViewに更新
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
         listView.setAdapter(adapter);
-
-
 
     }
 
