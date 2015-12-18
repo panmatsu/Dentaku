@@ -30,14 +30,19 @@ public class CalcActivity extends Activity  {
         //レイアウトをセットする
         setContentView(R.layout.activity_calc);
 
-
+        //Share preferenceの初期設定
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sp.edit();
+
+        //履歴のリスト
         listView = (ListView)findViewById(R.id.listView);
         mList = new String[10];
+        //Share preferenceからmListに代入
         for (int i = 0;i<10;i++){
             mList[i] = sp.getString("SaveString"+i,null);
         }
+        mList[0] = sp.getString("SaveString"+0, null);
+        //ListViewへの設定
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
         listView.setAdapter(adapter);
 
@@ -47,10 +52,7 @@ public class CalcActivity extends Activity  {
         text = (TextView)findViewById(R.id.textView);
         text.setText("00000000");
 
-        //追加
-        textView = (TextView)findViewById(R.id.text);
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
-        textView.setText(sp.getString("SaveString"+0, null), TextView.BufferType.NORMAL);
+
 
     }
 
@@ -158,8 +160,10 @@ public class CalcActivity extends Activity  {
             temp *= sum;
         }
         else if(mark==4){
+
+            //０で割ったときのエラーの処理
             if(temp==0){
-                Toast.makeText(this, "Error\n0以外を代入してください", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Error\n0以外を代入してください\n     "+sum+"÷□＝", Toast.LENGTH_LONG).show();
             }
             else
             temp = sum / temp;   //   /
@@ -169,19 +173,19 @@ public class CalcActivity extends Activity  {
 
 
         //Preferenceのテスト
-        textView.setText(String.valueOf(temp));
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sp.edit();
+        //mListの更新とSavePreferenceに代入
         for(int i = 9;i>0;i--){
             mList[i] = mList[i-1];
             editor.putString("SaveString" + i, mList[i]).apply();
         }
-        editor.commit();
+        sp.edit().putString("SaveString"+0,String.valueOf(temp)).apply();
         mList[0] = String.valueOf(temp);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,mList);
         listView.setAdapter(adapter);
-        //Preferenceにデータを保存
-        sp.edit().putString("SaveString"+0,String.valueOf(temp)).apply();
+
+
 
     }
 
