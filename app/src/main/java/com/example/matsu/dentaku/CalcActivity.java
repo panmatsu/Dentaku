@@ -158,6 +158,10 @@ public class CalcActivity extends Activity  {
             temp *= sum;
         }
         else if(mark==4){
+            if(temp==0){
+                Toast.makeText(this, "Error\n0以外を代入してください", Toast.LENGTH_LONG).show();
+            }
+            else
             temp = sum / temp;   //   /
         }
         //結果をテキストに表示
